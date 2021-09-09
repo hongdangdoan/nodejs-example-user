@@ -1,0 +1,25 @@
+{
+    "JWT":{
+        "Secret": "DHD",
+        "refreshTokenSecret": "some-s3cret-refre2h-token",
+        "tokenLife": 900,
+        "refreshTokenLife": 86400 
+    },
+    "Port": 3001,
+    "Database": {
+        "DB_DATABASE": "nodejs-api",
+        "DB_USER": "root",
+        "DB_PASS": "",
+        "DB_HOST": "localhost",
+        "DB_PORT": 3306
+    },
+    "LoggingService": {
+        "IsEnabled": true,
+        "Mode": "console",
+        "Timeout": 3000,
+        "Url": "http://internal-logging-kafkaproducer-uat-alb-1992552303.ap-southeast-1.elb.amazonaws.com/api/push"        
+    },
+    
+    "fontEndHost": "localhost:4444",
+    "MailHomeAddress":"http://abcxyz.xyz"
+}

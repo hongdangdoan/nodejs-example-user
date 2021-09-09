@@ -1,0 +1,181 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "center API",
+    "description": "Coder by HongDang"
+  },
+  "host": "localhost:3001",
+  "basePath": "/api/v1.0/",
+  "tags": [
+    {
+      "name": "nodejs api example",
+      "description": "nodejs api example"
+    }
+  ],
+  "schemes": [],
+  "securityDefinitions": {
+    "Bearer": {
+      "name": "Authorization",
+      "in": "header",
+      "type": "apiKey"
+    },
+    "Language": {
+      "name": "LanguageCode",
+      "in": "header",
+      "type": "apiKey"
+    }
+  },
+  "consumes": [],
+  "produces": [],
+  "paths": {},
+  "definitions": {
+    "Parents": {
+      "type": "object",
+      "properties": {
+        "father": {
+          "type": "string",
+          "example": "Simon Doe"
+        },
+        "mother": {
+          "type": "string",
+          "example": "Marie Doe"
+        }
+      }
+    },
+    "User": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "example": "Jhon Doe"
+        },
+        "age": {
+          "type": "number",
+          "example": 29
+        },
+        "parents": {
+          "$ref": "#/definitions/Parents"
+        },
+        "diplomas": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "school": {
+                "type": "string",
+                "example": "XYZ University"
+              },
+              "year": {
+                "type": "number",
+                "example": 2020
+              },
+              "completed": {
+                "type": "boolean",
+                "example": true
+              },
+              "internship": {
+                "type": "object",
+                "properties": {
+                  "hours": {
+                    "type": "number",
+                    "example": 290
+                  },
+                  "location": {
+                    "type": "string",
+                    "example": "XYZ Company"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "authenticaion": {
+      "type": "object",
+      "properties": {
+        "FirstName": {
+          "type": "string",
+          "example": "Nguyen"
+        },
+        "LastName": {
+          "type": "string",
+          "example": "Van D"
+        },
+        "Email": {
+          "type": "string",
+          "example": "hongdang@gmail.com"
+        },
+        "Password": {
+          "type": "string",
+          "example": "123456"
+        },
+        "RePassword": {
+          "type": "string",
+          "example": "123456"
+        }
+      },
+      "required": [
+        "FirstName",
+        "LastName",
+        "Email",
+        "Password",
+        "RePassword"
+      ]
+    },
+    "userActive": {
+      "type": "object",
+      "properties": {
+        "userID": {
+          "type": "string",
+          "example": "611c53f5-84c0-4911-a511-ef0279a4bbd9"
+        }
+      },
+      "required": [
+        "userID"
+      ]
+    },
+    "forgetPassword": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "example": "hongdang@gmail.com"
+        }
+      },
+      "required": [
+        "email"
+      ]
+    },
+    "login": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "example": "hongdang@gmail.com"
+        },
+        "password": {
+          "type": "string",
+          "example": "123456"
+        }
+      },
+      "required": [
+        "email",
+        "password"
+      ]
+    },
+    "createNewPassword": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string",
+          "example": "6AHfsQbHA39u9BIe4Jti"
+        }
+      },
+      "required": [
+        "code"
+      ]
+    }
+  }
+}
