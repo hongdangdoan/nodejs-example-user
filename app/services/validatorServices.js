@@ -2,17 +2,9 @@ const { check, body } = require("express-validator");
 
 let validateRegisterUser = () => {
   return [
+    check("Name","Name không được để trống").not().isEmpty(),
     check("Email", "Email không được để trống").not().isEmpty(),
     check("Email", "Email không hợp lệ").isEmail(),
-
-    check("FirstName", "Họ không được để trống").not().isEmpty(),
-    check("FirstName", "Họ ít nhất 1 ký tự").isLength({ min: 1 }),
-    check("FirstName", "Họ tối đa 19 ký tự").isLength({ max: 19 }),
-
-    check("LastName", "Tên không được để trống").not().isEmpty(),
-    check("LastName", "Tên ít nhất 1 ký tự").isLength({ min: 1 }),
-    check("LastName", "Tên tối đa 19 ký tự").isLength({ max: 19 }),
-
     check("Password", "Mật khẩu không được để trống").not().isEmpty(),
     check("Password", "Mật khẩu ít nhất 6 ký tự").isLength({ min: 6 }),
     check("Password", "Mật khẩu tối đa 19 ký tự").isLength({ max: 19 }),
@@ -21,8 +13,6 @@ let validateRegisterUser = () => {
       .isLength({ min: 1 })
       .withMessage("Xác nhận mật khẩu bắt buộc nhập"),
 
-    // check('birthday', 'Invalid birthday').isISO8601('yyyy-mm-dd'),
-    //  check('password', 'password more than 6 degits').isLength({ min: 6 })
   ];
 };
 

@@ -32,7 +32,7 @@ const doc = {
   info: {
     version: "1.0.0",
     title: "center API",
-    description: "Coder by HongDang",
+    description: "Coder by Hong Dang",
   },
   host: "localhost:3001",
   basePath: "/api/v1.0/",
@@ -41,8 +41,8 @@ const doc = {
   produces: [], // by default: ['application/json']
   tags: [
     {
-      name: "nodejs api example",
-      description: "nodejs api example",
+      name: "nodejs example",
+      description: "nodejs example",
     },
   ],
   securityDefinitions: {
@@ -81,9 +81,8 @@ const doc = {
       ],
     },
     authenticaion: {
-      $FirstName: "Nguyen",
-      $LastName: "Van D",
-      $Email: "hongdang@gmail.com",
+      $Name: "Nguyen Van D",
+      $Email: "nvd@gmail.com",
       $Password: "123456",
       $RePassword: "123456",
     },
@@ -91,10 +90,10 @@ const doc = {
       $userID: "611c53f5-84c0-4911-a511-ef0279a4bbd9",
     },
     forgetPassword: {
-      $email: "hongdang@gmail.com",
+      $email: "nvd246@gmail.com",
     },
     login: {
-      $email: "hongdang@gmail.com",
+      $email: "nguyenvanluyen246@gmail.com",
       $password: "123456",
     },
     createNewPassword: {
@@ -104,5 +103,6 @@ const doc = {
 };
 
 swaggerAutogen(outputFile, endpointsFiles, doc).then(() => {
-  require("./index.js");
+    require("./index.js");
+ 
 });

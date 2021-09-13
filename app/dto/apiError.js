@@ -1,6 +1,6 @@
 const constant = require('../constant/constant');
 
-module.exports = class nvlgameError extends Error {
+module.exports = class apiError extends Error {
     constructor(errorCode, errorType = null, errorData = null) {
 
         // Calling parent constructor of base Error class.

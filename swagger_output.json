@@ -3,14 +3,14 @@
   "info": {
     "version": "1.0.0",
     "title": "center API",
-    "description": "Coder by HongDang"
+    "description": "Coder by Hong Dang"
   },
   "host": "localhost:3001",
   "basePath": "/api/v1.0/",
   "tags": [
     {
-      "name": "nodejs api example",
-      "description": "nodejs api example"
+      "name": "nodejs example",
+      "description": "nodejs example"
     }
   ],
   "schemes": [],
@@ -28,7 +28,78 @@
   },
   "consumes": [],
   "produces": [],
-  "paths": {},
+  "paths": {
+    "/user/register": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "description": "Endpoint to get token with username & password",
+        "parameters": [
+          {
+            "name": "obj",
+            "in": "body",
+            "description": "User name + password",
+            "required": true,
+            "type": "object",
+            "schema": {
+              "$ref": "#/definitions/authenticaion"
+            }
+          }
+        ],
+        "responses": {},
+        "security": [
+          {
+            "Bearer": [],
+            "LanguageCode": []
+          }
+        ]
+      }
+    },
+    "/user/login": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "description": "Endpoint to get token with username & password",
+        "parameters": [
+          {
+            "name": "obj",
+            "in": "body",
+            "description": "User name + password",
+            "required": true,
+            "type": "object",
+            "schema": {
+              "$ref": "#/definitions/login"
+            }
+          }
+        ],
+        "responses": {},
+        "security": [
+          {
+            "Bearer": [],
+            "LanguageCode": []
+          }
+        ]
+      }
+    },
+    "/user/getListUser": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "description": "Endpoint to get token with username & password",
+        "parameters": [],
+        "responses": {},
+        "security": [
+          {
+            "Bearer": [],
+            "LanguageCode": []
+          }
+        ]
+      }
+    }
+  },
   "definitions": {
     "Parents": {
       "type": "object",
@@ -95,17 +166,13 @@
     "authenticaion": {
       "type": "object",
       "properties": {
-        "FirstName": {
+        "Name": {
           "type": "string",
-          "example": "Nguyen"
-        },
-        "LastName": {
-          "type": "string",
-          "example": "Van D"
+          "example": "Nguyen Van D"
         },
         "Email": {
           "type": "string",
-          "example": "hongdang@gmail.com"
+          "example": "nvd@gmail.com"
         },
         "Password": {
           "type": "string",
@@ -117,8 +184,7 @@
         }
       },
       "required": [
-        "FirstName",
-        "LastName",
+        "Name",
         "Email",
         "Password",
         "RePassword"
@@ -141,7 +207,7 @@
       "properties": {
         "email": {
           "type": "string",
-          "example": "hongdang@gmail.com"
+          "example": "nvd246@gmail.com"
         }
       },
       "required": [
@@ -153,7 +219,7 @@
       "properties": {
         "email": {
           "type": "string",
-          "example": "hongdang@gmail.com"
+          "example": "nguyenvanluyen246@gmail.com"
         },
         "password": {
           "type": "string",

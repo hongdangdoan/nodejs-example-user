@@ -2,7 +2,7 @@ const responseDto = require("../dto/responseDTO");
 const constants = require("../constant/constant");
 const violationDto = require("../dto/violationDTO");
 const errorService = require('../services/errorServices');
-const NVLgameError = require('../dto/nvlgameError');
+const apiError = require('../dto/apiError');
 
 
 module.exports = function (req, res, next) {

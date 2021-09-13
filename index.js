@@ -32,7 +32,8 @@ app.use(function (req, res, next) {
 /**
  * MIDDLEWARE
  **/
-
+ app.use(require('./app/middleware/responseTemplate'));
+ require('./app/route')(app);
 
 app.listen(port, function () {
     console.log("Server listen on port: " + port);
