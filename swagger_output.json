@@ -98,6 +98,52 @@
           }
         ]
       }
+    },
+    "/user/getListUserOnPage": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "description": "Endpoint to get token with username & password",
+        "parameters": [
+          {
+            "name": "pageSize",
+            "in": "query",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "currentPage",
+            "in": "query",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {},
+        "security": [
+          {
+            "Bearer": [],
+            "LanguageCode": []
+          }
+        ]
+      }
+    },
+    "/user/getMyInfo": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "description": "Endpoint to get my info",
+        "parameters": [],
+        "responses": {},
+        "security": [
+          {
+            "required": false,
+            "Bearer": [],
+            "LanguageCode": []
+          }
+        ]
+      }
     }
   },
   "definitions": {

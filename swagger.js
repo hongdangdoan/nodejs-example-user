@@ -99,7 +99,8 @@ const doc = {
     createNewPassword: {
       $code: "6AHfsQbHA39u9BIe4Jti",
     },
-  },
+    
+  }
 };
 
 swaggerAutogen(outputFile, endpointsFiles, doc).then(() => {

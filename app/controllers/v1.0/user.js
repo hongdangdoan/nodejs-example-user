@@ -9,6 +9,7 @@ const verify = require("../../middleware/authVerify");
 const { validate } = require("../../services/validatorServices");
 const { validationResult } = require("express-validator");
 const AuthDTO = require("../../dto/authDTO");
+const { constantCase } = require("constant-case");
 
 class userController {
     constructor() {
@@ -88,7 +89,64 @@ class userController {
                 await self.getAllUser(req, res, next);
 
             });
+
+        router
+        .route("/getListUserOnPage/")
+        .get(async function (req, res,next){
+    /*
+                                            #swagger.path = '/user/getListUserOnPage' 
+                                            #swagger.tags = ['User']
+                                            #swagger.description = 'Endpoint to get token with username & password' */
+                /*	
+                                           #swagger.description = 'Endpoint to get token with username & password' */
+                /*	#swagger.parameters['pageSize']=
+                                        {
+                                            name: 'pageSize',
+                                            in: 'query',
+                                            name: 'pageSize',
+                                            required: false,
+                                            type: 'integer'
+                                         }
+                    #swagger.parameters['currentPage']=
+                                        {
+                                           name: 'currentPage',
+                                           in: 'query',
+                                           name: 'currentPage',
+                                           required: false,
+                                           type: 'integer'
+                                         }
+                        
+                                            #swagger.security = [{
+                                                Bearer: [],
+                                                LanguageCode: []
+                                            }] 
+                                        */
+            await self.getListUserOnPage(req, res, next);
+        });
+
+        router
+        .route("/getMyInFo")
+        .get(async function (req,res, next){
+            /*
+                                            #swagger.path = '/user/getMyInfo' 
+                                            #swagger.tags = ['User']
+                                            #swagger.description = 'Endpoint to get my info' */
+                /*	
+                                            #swagger.security = [{
+                                                
+                                                Bearer: [],
+                                                LanguageCode: []
+                                                
+                                            }] 
+                                        */
+
+            await self.getMyInFo(req,res, next);
+        });
     }
+     
+    
+  
+
 
     //function to execute
     async register(req, res, next) {
@@ -224,10 +282,25 @@ class userController {
         const self = this;
         const METHOD_NAME = "getMeData";
         const SOURCE = `${CLASS_NAME}.${METHOD_NAME}`;
-
         const lstUser = await this.userProvider.getUserByID(req.user.id);
         if (!lstUser) return res.sendError("Exception", req.headers.languageid);
         return await res.sendOk(lstUser);
+    }
+
+    async getListUserOnPage(req,res, next){
+        const self = this;
+        const   METHOD_NAME = "getAllUserWithPagging";
+        const SOURCE = `${CLASS_NAME}.${METHOD_NAME}`;
+        var pageSize = parseInt(req.query.pageSize);
+        var currentPage = parseInt(req.query.currentPage);
+        const lstUser = await this.userProvider.getAllUserWithPagging(pageSize,currentPage);
+        return await res.sendOk({ data: lstUser.rows,
+            totalPage: Math.ceil(lstUser.count/constant.PER_PAGE_RESULT),
+            currentPage: currentPage});
+    }
+
+    async getMyInFo(req,res, next){
+        return await res.sendOk();
     }
 }
 

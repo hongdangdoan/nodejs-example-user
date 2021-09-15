@@ -4,6 +4,7 @@ const Op = require("sequelize").Op;
 const apiError = require("../dto/apiError");
 const bcrypt = require("bcryptjs");
 const helperServices = require("../services/helperServices");
+const constant = require("../constant/constant");
 var nconf = require("nconf");
 
 var initModels = require("../models/init-models");
@@ -14,7 +15,6 @@ const sequelize = new Sequelize(nconf.get("Database:DB_DATABASE"), nconf.get("Da
   dialect: 'mysql',
   operatorsAliases: 0
 });
-
 
 class userProvider {
   constructor(skipInitDb) {
@@ -34,8 +34,6 @@ class userProvider {
     return await bcrypt.compare(password, passwordHash);
   }
 
-
-
   async getAllUser() {
     const self = this;
     try {
@@ -45,6 +43,21 @@ class userProvider {
       throw ex;
     }
   }
+
+  async getAllUserWithPagging( pageSize,  currentPage) {
+    const self = this;
+    try {
+      var result = await self.db.user.findAndCountAll({
+        offset: (currentPage-1)*constant.PER_PAGE_RESULT,
+        limit:pageSize
+        
+      });
+      return result;
+    } catch (ex) {
+      throw ex;
+    }
+  }
+
 
   async getUserByEmail(Email) {
     const self = this;
