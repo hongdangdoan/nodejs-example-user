@@ -34,7 +34,7 @@
         "tags": [
           "User"
         ],
-        "description": "Endpoint to get token with username & password",
+        "description": "Endpoint to register",
         "parameters": [
           {
             "name": "obj",
@@ -88,7 +88,7 @@
         "tags": [
           "User"
         ],
-        "description": "Endpoint to get token with username & password",
+        "description": "Endpoint to get list user do not use pagging",
         "parameters": [],
         "responses": {},
         "security": [
@@ -104,7 +104,7 @@
         "tags": [
           "User"
         ],
-        "description": "Endpoint to get token with username & password",
+        "description": "Endpoint to get list of user using pagging",
         "parameters": [
           {
             "name": "pageSize",
@@ -138,7 +138,33 @@
         "responses": {},
         "security": [
           {
-            "required": false,
+            "Bearer": [],
+            "LanguageCode": []
+          }
+        ]
+      }
+    },
+    "/user/updateMyInfo": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "description": "Endpoint to update my info: provide:oldName, oldEmail",
+        "parameters": [
+          {
+            "name": "new information",
+            "in": "body",
+            "description": "New information ",
+            "required": true,
+            "type": "object",
+            "schema": {
+              "$ref": "#/definitions/updateMyInfo"
+            }
+          }
+        ],
+        "responses": {},
+        "security": [
+          {
             "Bearer": [],
             "LanguageCode": []
           }
@@ -265,7 +291,7 @@
       "properties": {
         "email": {
           "type": "string",
-          "example": "nguyenvanluyen246@gmail.com"
+          "example": "nguyenvana@gmail.com"
         },
         "password": {
           "type": "string",
@@ -287,6 +313,43 @@
       },
       "required": [
         "code"
+      ]
+    },
+    "updateMyInfo": {
+      "type": "object",
+      "properties": {
+        "OldEmail": {
+          "type": "string",
+          "example": "nguyenvana@gmail.com"
+        },
+        "OldName": {
+          "type": "string",
+          "example": "nguyen van a"
+        },
+        "NewEmail": {
+          "type": "string",
+          "example": "nguyenvana@gmail.com"
+        },
+        "NewName": {
+          "type": "string",
+          "example": "nguyen van a"
+        },
+        "NewPassword": {
+          "type": "string",
+          "example": "123456"
+        },
+        "NewRePassword": {
+          "type": "string",
+          "example": "123456"
+        }
+      },
+      "required": [
+        "OldEmail",
+        "OldName",
+        "NewEmail",
+        "NewName",
+        "NewPassword",
+        "NewRePassword"
       ]
     }
   }

@@ -13,7 +13,7 @@ module.exports = function (req, res, next) {
         var message = err;
         var violations = [];
 
-        if (err instanceof NVLgameError) {
+        if (err instanceof apiError) {
             message = errService.getMessage(err.errorCode, err.errorType, languageId);
 
             if (message) {
@@ -38,7 +38,7 @@ module.exports = function (req, res, next) {
         var message = err;
         var violations = [];
 
-        if (err instanceof NVLgameError) {
+        if (err instanceof apiError) {
             message = errService.getMessage(err.errorCode, err.errorType, languageId);
 
             if (message) {

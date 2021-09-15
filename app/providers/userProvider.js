@@ -44,13 +44,13 @@ class userProvider {
     }
   }
 
-  async getAllUserWithPagging( pageSize,  currentPage) {
+  async getAllUserWithPagging(pageSize, currentPage) {
     const self = this;
     try {
       var result = await self.db.user.findAndCountAll({
-        offset: (currentPage-1)*constant.PER_PAGE_RESULT,
-        limit:pageSize
-        
+        offset: (currentPage - 1) * constant.PER_PAGE_RESULT,
+        limit: pageSize
+
       });
       return result;
     } catch (ex) {
@@ -59,10 +59,10 @@ class userProvider {
   }
 
 
-  async getUserByEmail(Email) {
+  async getUserByEmail(email) {
     const self = this;
     try {
-      var result = await self.db.user.findOne({ where: { email: Email } });
+      var result = await self.db.user.findOne({ where: { email: email } });
       return result;
     } catch (ex) {
       console.log("Error when run function findOne: " + ex)
@@ -97,14 +97,12 @@ class userProvider {
     }
   }
 
-
-
-  async updateUserPassword(email, password) {
+  async updateUserPassword(EMAIL, password) {
     const self = this;
 
     try {
       return await self.db.user
-        .update({ password: password }, { where: { email: email } })
+        .update({ password: password }, { where: { email: EMAIL } })
         .then((result) => {
           return true;
         })
@@ -144,6 +142,43 @@ class userProvider {
       throw new Error(`Unable to connect to the database.`);
     }
   }
+
+  async updateUserName(EMAIL, name) {
+    const self = this;
+
+    try {
+      return await self.db.user
+        .update({ name: name }, { where: { email: EMAIL } })
+        .then((result) => {
+          return true;
+        })
+        .catch((err) => {
+          return false;
+        });
+    } catch (error) {
+      console.log(error);
+      throw new Error(`Unable to connect to the database.`);
+    }
+  }
+
+  async updateUserEmail(EMAIL, email) {
+    const self = this;
+
+    try {
+      return await self.db.user
+        .update({ email: email }, { where: { email: EMAIL } })
+        .then((result) => {
+          return true;
+        })
+        .catch((err) => {
+          return false;
+        });
+    } catch (error) {
+      console.log(error);
+      throw new Error(`Unable to connect to the database.`);
+    }
+  }
+
 }
 
 module.exports = userProvider;

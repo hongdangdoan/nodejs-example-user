@@ -10,6 +10,7 @@ const { validate } = require("../../services/validatorServices");
 const { validationResult } = require("express-validator");
 const AuthDTO = require("../../dto/authDTO");
 const { constantCase } = require("constant-case");
+const { selectFields } = require("express-validator/src/select-fields");
 
 class userController {
     constructor() {
@@ -28,19 +29,21 @@ class userController {
                 /*
                                             #swagger.path = '/user/register' 
                                             #swagger.tags = ['User']
-                                            #swagger.description = 'Endpoint to get token with username & password' */
-                /*	#swagger.parameters['obj'] = {
+                                            #swagger.description = 'Endpoint to register' 
+                */
+                /*	#swagger.parameters['obj']= 
+                                        {
                                                 in: 'body',
                                                 description: 'User name + password',
                                                 required: true,
                                                 type: 'object',
                                                 schema: { $ref: "#/definitions/authenticaion" }
-                                            } 
+                                        } 
                                             #swagger.security = [{
                                                 Bearer: [],
                                                 LanguageCode: []
                                             }] 
-                                        */
+                 */
 
                 await self.register(req, res);
             })
@@ -52,8 +55,10 @@ class userController {
                 /*
                                           #swagger.path = '/user/login' 
                                           #swagger.tags = ['User']
-                                          #swagger.description = 'Endpoint to get token with username & password' */
-                /*	#swagger.parameters['obj'] = {
+                                          #swagger.description = 'Endpoint to get token with username & password'
+                 */
+                /*	#swagger.parameters['obj']=
+                                           {
                                                 in: 'body',
                                                 description: 'User name + password',
                                                 required: true,
@@ -64,7 +69,7 @@ class userController {
                                                 Bearer: [],
                                                 LanguageCode: []
                                             }] 
-                                        */
+                    */
 
                 await self.login(req, res, next);
 
@@ -78,27 +83,26 @@ class userController {
                 /*
                                             #swagger.path = '/user/getListUser' 
                                             #swagger.tags = ['User']
-                                            #swagger.description = 'Endpoint to get token with username & password' */
+                                            #swagger.description = 'Endpoint to get list user do not use pagging' */
                 /*	
                                             #swagger.security = [{
                                                 Bearer: [],
                                                 LanguageCode: []
                                             }] 
-                                        */
+                */
 
                 await self.getAllUser(req, res, next);
 
             });
 
         router
-        .route("/getListUserOnPage/")
-        .get(async function (req, res,next){
-    /*
-                                            #swagger.path = '/user/getListUserOnPage' 
-                                            #swagger.tags = ['User']
-                                            #swagger.description = 'Endpoint to get token with username & password' */
-                /*	
-                                           #swagger.description = 'Endpoint to get token with username & password' */
+            .route("/getListUserOnPage/")
+            .get(async function (req, res, next) {
+                /*
+                                                        #swagger.path = '/user/getListUserOnPage' 
+                                                        #swagger.tags = ['User']
+                                                        #swagger.description = 'Endpoint to get list of user using pagging' 
+                */
                 /*	#swagger.parameters['pageSize']=
                                         {
                                             name: 'pageSize',
@@ -120,32 +124,59 @@ class userController {
                                                 Bearer: [],
                                                 LanguageCode: []
                                             }] 
-                                        */
-            await self.getListUserOnPage(req, res, next);
-        });
+                    */
+                await self.getListUserOnPage(req, res, next);
+            });
 
         router
-        .route("/getMyInFo")
-        .get(async function (req,res, next){
-            /*
-                                            #swagger.path = '/user/getMyInfo' 
-                                            #swagger.tags = ['User']
-                                            #swagger.description = 'Endpoint to get my info' */
+            .route("/getMyInfo")
+            .all(verify)
+            .get(async function (req, res, next) {
+                /*
+                                                #swagger.path = '/user/getMyInfo' 
+                                                #swagger.tags = ['User']
+                                                #swagger.description = 'Endpoint to get my info'
+                 */
+                /* 
+                                               #swagger.security = [{
+                                                   Bearer: [],
+                                                   LanguageCode: []   
+                                               }] 
+                */
+
+                await self.getMyInfo(req, res, next);
+
+
+            });
+
+        router
+            .route("/updateMyInfo")
+            .all(verify)
+            .post(async function (req, res, next) {
+                /*
+                                          #swagger.path = '/user/updateMyInfo' 
+                                          #swagger.tags = ['User']
+                                          #swagger.description = 'Endpoint to update my info: provide:oldName, oldEmail' */
                 /*	
+                    #swagger.parameters['new information']= 
+                                           {
+                                                in: 'body',
+                                                description: 'New information ',
+                                                required: true,
+                                                type: 'object',
+                                                schema: { $ref: "#/definitions/updateMyInfo" }
+                                            } 
                                             #swagger.security = [{
-                                                
                                                 Bearer: [],
                                                 LanguageCode: []
-                                                
                                             }] 
-                                        */
+                 */
 
-            await self.getMyInFo(req,res, next);
-        });
+
+                await self.updateMyInfo(req, res, next);
+            });
     }
-     
-    
-  
+
 
 
     //function to execute
@@ -204,12 +235,8 @@ class userController {
 
         }
 
-
-
         return await res.sendError("Somethings happen", req.headers.LanguageCode);
     }
-
-
 
     async login(req, res, next) {
         const self = this;
@@ -243,12 +270,12 @@ class userController {
 
         try {
             //Access token
-            const token = jwt.sign({ id: user.id }, nconf.get("JWT:Secret"), {
+            const token = jwt.sign({ email: user.email }, nconf.get("JWT:Secret"), {
                 expiresIn: nconf.get("JWT:tokenLife"),
             });
             //Refresh token
             const refreshToken = jwt.sign(
-                { id: user.id },
+                { email: user.email },
                 nconf.get("JWT:refreshTokenSecret"),
                 { expiresIn: nconf.get("JWT:refreshTokenLife") }
             );
@@ -287,20 +314,101 @@ class userController {
         return await res.sendOk(lstUser);
     }
 
-    async getListUserOnPage(req,res, next){
+    async getListUserOnPage(req, res, next) {
         const self = this;
-        const   METHOD_NAME = "getAllUserWithPagging";
+        const METHOD_NAME = "getAllUserWithPagging";
         const SOURCE = `${CLASS_NAME}.${METHOD_NAME}`;
         var pageSize = parseInt(req.query.pageSize);
         var currentPage = parseInt(req.query.currentPage);
-        const lstUser = await this.userProvider.getAllUserWithPagging(pageSize,currentPage);
-        return await res.sendOk({ data: lstUser.rows,
-            totalPage: Math.ceil(lstUser.count/constant.PER_PAGE_RESULT),
-            currentPage: currentPage});
+        const lstUser = await this.userProvider.getAllUserWithPagging(pageSize, currentPage);
+        return await res.sendOk({
+            data: lstUser.rows,
+            totalPage: Math.ceil(lstUser.count / constant.PER_PAGE_RESULT),
+            currentPage: currentPage
+        });
     }
 
-    async getMyInFo(req,res, next){
-        return await res.sendOk();
+    async getMyInfo(req, res, next) {
+        const self = this;
+        const METHOD_NAME = "getMyInfo";
+        const SOURCE = `${CLASS_NAME}.${METHOD_NAME}`;
+        const result = await this.userProvider.getUserByEmail(req.user.email);
+        return await res.sendOk(result);
+    }
+
+    async updateMyInfo(req, res, next) {
+        const self = this;
+        const METHOD_NAME = "updateMyInfo";
+        const SOURCE = `${CLASS_NAME}.${METHOD_NAME}`;
+
+        console.log("show data: ");
+        console.log(req.user.email);
+        console.log(req.body.OldEmail);
+        if (req.user.email != req.body.OldEmail) {
+
+            return await res.sendError("Dữ liệu không hợp lệ", req.headers.languageid);
+        }
+        const user = await this.userProvider.getUserByEmail(req.user.email);
+        console.log(user.name);
+        if (user.name != req.body.OldName) {
+            return await res.sendError("Dữ liệu không hợp lệ", req.headers.languageid);
+        }
+        else {
+            if (req.body.NewName != null) {
+                console.log("update name");
+                try {
+                    const resultCreate = await self.userProvider.updateUserName(req.user.email, req.body.NewName);
+                } catch (ex) {
+                    console.log("Error while running update function: " + ex);
+                    return res.sendError({
+                        message: "Lỗi cập nhật thông tin"
+                    });
+
+                }
+            }
+
+            if (req.body.NewPassword != null) {
+                if (req.body.NewPassword != req.body.NewRePassword)
+                    return res.sendError(
+                        "2 mật khẩu không giống nhau",
+                        req.headers.languageid
+                    );
+                const passwordHash = await self.userProvider.hashPassword(
+                    req.body.NewPassword
+                );
+                try {
+                    console.log("update password");
+                    const resultCreate = await self.userProvider.updateUserPassword(req.user.email, passwordHash);
+
+                } catch (ex) {
+                    console.log("Error while running update function: " + ex);
+                    return res.sendError({
+                        message: "Lỗi cập nhật thông tin"
+                    });
+                }
+            }
+            if (req.body.NewEmail != null) {
+                const emailExist = await self.userProvider.getUserByEmail(req.body.NewEmail);
+                if (emailExist) {
+                    return res.sendError("Tài khoản đã tồn tại", req.headers.languageid);
+                }
+                try {
+                    const resultCreate = await self.userProvider.updateUserEmail(req.user.email, req.body.NewEmail);
+
+                } catch (ex) {
+                    console.log("Error while running update function: " + ex);
+                    return res.sendError({
+                        message: "Lỗi cập nhật thông tin"
+                    });
+                }
+                console.log("update email");
+            }
+
+            return res.sendOk({
+                message: "Cập nhật thông tin thành công"
+            });
+        }
+
     }
 }
 

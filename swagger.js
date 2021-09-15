@@ -93,17 +93,25 @@ const doc = {
       $email: "nvd246@gmail.com",
     },
     login: {
-      $email: "nguyenvanluyen246@gmail.com",
+      $email: "nguyenvana@gmail.com",
       $password: "123456",
     },
     createNewPassword: {
       $code: "6AHfsQbHA39u9BIe4Jti",
     },
-    
+    updateMyInfo: {
+      $OldEmail: "nguyenvana@gmail.com",
+      $OldName: "nguyen van a",
+      $NewEmail: "nguyenvana@gmail.com",
+      $NewName: "nguyen van a",
+      $NewPassword: "123456",
+      $NewRePassword: "123456"
+    }
+
   }
 };
 
 swaggerAutogen(outputFile, endpointsFiles, doc).then(() => {
-    require("./index.js");
- 
+  require("./index.js");
+
 });
